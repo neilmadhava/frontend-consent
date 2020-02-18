@@ -4,6 +4,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sys
+import ast
 
 # all variables
 args = sys.argv
@@ -18,26 +19,34 @@ def queryButton(self):
     else:
         label.set_text('Querying Data for '+str(value))
         result = os.popen('./query.sh ' + token + ' ' + org + ' ' + value).read()
-        print(result)
+        js = result.split(" ")[3]
+        js = ast.literal_eval(js)
+        pretty = ' '.join(result.split(" ")[:3])
+        stri = ""
+        for key in js.keys():
+            stri += key + ": \t" + js[key] + "\n"
+
+        result =  pretty + "\n" + stri
         dialog = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
         dialog.format_secondary_text(result)
         dialog.run()
         dialog.destroy()
+        label.set_text('')
 
 def revokeButton(self):
     value = str(entry.get_text())
-    label.set_text('Revoking Consent')
+    # label.set_text('Revoking Consent')
     result = os.popen('./users.sh ' + token + ' ' + 'revokeconsent' + ' ' + value).read()
     print(result)
 
 def deleteButton(self):
     value = str(entry.get_text())
-    label.set_text('Deleting data from system')
+    # label.set_text('Deleting data from system')
     result = os.popen('./users.sh ' + token + ' ' + 'delete' + ' ' + value).read()
     print(result)
 
 def applicationFormButton(self):
-    label.set_text('Form window is now open')
+    # label.set_text('Form window is now open')
     os.system('python3 form.py ' + token)
 
 

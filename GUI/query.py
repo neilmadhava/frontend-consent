@@ -4,6 +4,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sys
+import ast
+
 # all variables
 args = sys.argv
 token = args[1]
@@ -17,12 +19,21 @@ def queryButton(self):
     else:
         label.set_text('Querying Data for '+str(value))
         result = os.popen('./query.sh ' + token + ' ' + org + ' ' + value).read()
-        print(result)
+        
+        if(len(result.split(" ")) == 7):
+            js = result.split(" ")[3]
+            js = ast.literal_eval(js)
+            pretty = ' '.join(result.split(" ")[:3])
+            stri = ""
+            for key in js.keys():
+                stri += key + ": \t" + js[key] + "\n"
+
+            result =  "\n" + stri
         dialog = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
-        # result = 'some text' # insert your querying data command here after formatting it as required
         dialog.format_secondary_text(result)
         dialog.run()
         dialog.destroy()
+        label.set_text('')
 
 # all widgets
 builder = Gtk.Builder()
