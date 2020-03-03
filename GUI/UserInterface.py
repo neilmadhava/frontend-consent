@@ -5,6 +5,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sys
 import ast
+from pprint import pprint,pformat
+import json
 
 args = sys.argv
 airport_token = args[1]
@@ -34,6 +36,9 @@ class GUI:
         self.entry[9] = self.builder.get_object("entry9") #access level
         self.entry[9].set_model(opts)
         self.entry[9].set_entry_text_column(1)
+        self.entry[10] = self.builder.get_object("entry10") #access level
+        self.entry[10].set_model(opts)
+        self.entry[10].set_entry_text_column(1)
         self.window = self.builder.get_object('window')
         self.window.show_all()
 
@@ -49,22 +54,10 @@ class GUI:
 
 
 
-
-
-
-
-
     def home_clicked (self, button):
         stack = self.builder.get_object('stack')
         home_button = self.builder.get_object('home_button')
         stack.set_visible_child(home_button)
-
-
-
-
-
-
-
 
 
     def button_clicked (self, button):
@@ -73,19 +66,16 @@ class GUI:
         stack.set_visible_child(notebook_box)
 
 
-
-
-
-
-
-
     def applicationFormOpenButton(self,button):
         stack = self.builder.get_object('stack')
         applicationForm = self.builder.get_object('ApplicationFormBox')
         stack.set_visible_child(applicationForm)
 
 
-
+    def updateButton(self,button):
+        stack = self.builder.get_object('stack')
+        consentWindow = self.builder.get_object('consentWindow')
+        stack.set_visible_child(consentWindow)
 
 
 
@@ -100,6 +90,7 @@ class GUI:
         else:
             infoLabel.set_text('')
             result = os.popen('./query.sh ' + airport_token + ' ' + 'airport' + ' ' + value).read()
+            print(result)
             if(len(result.split(" ")) == 7):
                 js = result.split(" ")[3]
                 js = ast.literal_eval(js)
@@ -114,7 +105,6 @@ class GUI:
             dialog.run()
             dialog.destroy()
 
-
     def queryButtonCCD(self,button):
         entry = self.builder.get_object('usernameEntry')
         infoLabel = self.builder.get_object('infoLabel')
@@ -124,6 +114,7 @@ class GUI:
         else:
             infoLabel.set_text('')
             result = os.popen('./query.sh ' + airport_token + ' ' + 'ccd' + ' ' + value).read()
+            print(result)
             if(len(result.split(" ")) == 7):
                 js = result.split(" ")[3]
                 js = ast.literal_eval(js)
@@ -147,6 +138,7 @@ class GUI:
         else:
             infoLabel.set_text('')
             result = os.popen('./query.sh ' + users_token + ' ' + 'users' + ' ' + value).read()
+            print(result)
             if(len(result.split(" ")) == 7):
                 js = result.split(" ")[3]
                 js = ast.literal_eval(js)
@@ -165,9 +157,6 @@ class GUI:
 
 
 
-
-
-
     def revokeButton(self,button):
         entry = self.builder.get_object('usernameEntry')
         infoLabel = self.builder.get_object('infoLabel')
@@ -179,12 +168,16 @@ class GUI:
             result = os.popen('./users.sh ' + users_token + ' ' + 'revokeconsent' + ' ' + value).read()
             print(result)
 
-
-
-
-
-
-
+    def updateConsent(self,button):
+        entry = self.builder.get_object('userEntry')
+        value = str(entry.get_text())
+        access = self.entry[10].get_model()[self.entry[10].get_active()]
+        consent = access[1]
+        print(value + " " + consent)
+        result = os.popen('./users.sh ' + users_token + ' ' + 'update' + ' ' + value + ' ' + consent).read()
+        stack = self.builder.get_object('stack')
+        notebook_box = self.builder.get_object('notebook_box')
+        stack.set_visible_child(notebook_box)
 
     def deleteDataButton(self,button):
         entry = self.builder.get_object('usernameEntry')
@@ -196,11 +189,6 @@ class GUI:
             infoLabel.set_text('')
             result = os.popen('./users.sh ' + users_token + ' ' + 'delete' + ' ' + value).read()
             print(result)
-
-
-
-
-
 
     def applicationFormSubmitButton(self,button):
         self.entry[1] = self.builder.get_object('entry1') #userID
@@ -257,6 +245,40 @@ class GUI:
             stack = self.builder.get_object('stack')
             notebook_box = self.builder.get_object('notebook_box')
             stack.set_visible_child(notebook_box)
+
+
+
+
+    def blockNumQuery(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        value = str(entry.get_text())
+        result = os.popen('./blockchain.sh ' + users_token + ' ' + 'blocknum' + ' ' + value).read()
+        # print(result)
+        dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
+        dialog.format_secondary_text(result)
+        dialog.run()
+        dialog.destroy()
+
+    def blocktx(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        value = str(entry.get_text())
+        result = os.popen('./blockchain.sh ' + users_token + ' ' + 'blocktx' + ' ' + value).read()
+        pprint(json.loads(result)['transactionEnvelope']['payload']['data']['actions'][0]['payload']['action']['proposal_response_payload'], width=300, depth=10, compact=True)
+        dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
+        dialog.format_secondary_text(pformat(json.loads(result)['transactionEnvelope']['payload']['data']['actions'][0]['payload']['action']['proposal_response_payload'], width=300, depth=10, compact=True))
+        dialog.run()
+        dialog.destroy()
+
+    def chainInfo(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        value = str(entry.get_text())
+        result = os.popen('./blockchain.sh ' + users_token + ' ' + 'chaininfo' + ' ' + value).read()
+        dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
+        dialog.format_secondary_text(pformat(json.loads(result), compact=True))
+        dialog.run()
+        dialog.destroy()
+
+# c10e334e68406ce1bfa205ab63c830986ddd7c615b466cadf1e35ed2b4db7765
 
 
 

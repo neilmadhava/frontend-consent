@@ -8,9 +8,10 @@ airport_client="$1"
 ccd_client="$2"
 users_client="$3"
 
-CC_SRC_PATH="$PWD/chaincode/chain_person"
-CC_CCP_PATH="$PWD/chaincode/chain_person/collections_config.json"
+CC_SRC_PATH="$PWD/chaincode/chain_person01"
+CC_CCP_PATH="$PWD/chaincode/chain_person01/collections_config.json"
 LANGUAGE="node"
+chaincodeName="testv5"
 
 ORG1_TOKEN=$(curl -s -X POST \
   http://localhost:4000/users \
@@ -114,7 +115,7 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d "{
 	\"peers\": [\"peer0.airport.example.com\",\"peer1.airport.example.com\"],
-	\"chaincodeName\":\"chainv1_3\",
+	\"chaincodeName\":\"$chaincodeName\",
 	\"chaincodePath\":\"$CC_SRC_PATH\",
 	\"chaincodeType\": \"$LANGUAGE\",
 	\"chaincodeVersion\":\"1.0\"
@@ -129,7 +130,7 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d "{
   \"peers\": [\"peer0.ccd.example.com\",\"peer1.ccd.example.com\"],
-  \"chaincodeName\":\"chainv1_3\",
+  \"chaincodeName\":\"$chaincodeName\",
   \"chaincodePath\":\"$CC_SRC_PATH\",
   \"chaincodeType\": \"$LANGUAGE\",
   \"chaincodeVersion\":\"1.0\"
@@ -143,7 +144,7 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d "{
   \"peers\": [\"peer0.users.example.com\",\"peer1.users.example.com\"],
-  \"chaincodeName\":\"chainv1_3\",
+  \"chaincodeName\":\"$chaincodeName\",
   \"chaincodePath\":\"$CC_SRC_PATH\",
   \"chaincodeType\": \"$LANGUAGE\",
   \"chaincodeVersion\":\"1.0\"
@@ -157,7 +158,7 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d "{
   \"peers\": [\"peer0.airport.example.com\"],
-	\"chaincodeName\":\"chainv1_3\",
+	\"chaincodeName\":\"$chaincodeName\",
 	\"chaincodeVersion\":\"1.0\",
 	\"chaincodeType\": \"$LANGUAGE\",
 	\"args\":[\"init\"],
