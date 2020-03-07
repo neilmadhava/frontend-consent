@@ -5,7 +5,7 @@ command="$2"
 arg1="$3"
 arg2="$4"
 
-chaincodeName="testv5"
+chaincodeName="testv10"
 
 if [ $command = "revokeconsent" ]
 then
@@ -14,7 +14,7 @@ then
 	  -H "authorization: Bearer $token" \
 	  -H "content-type: application/json" \
 	  -d "{
-	  \"peers\": [\"peer0.airport.example.com\",\"peer0.ccd.example.com\",\"peer0.users.example.com\"],
+	  \"peers\": [\"peer0.airport.example.com\"],
 	  \"fcn\":\"revokeConsent\",
 	  \"args\":[\"$arg1\"]
 	}")
@@ -28,7 +28,7 @@ then
 	  -H "authorization: Bearer $token" \
 	  -H "content-type: application/json" \
 	  -d "{
-	  \"peers\": [\"peer0.airport.example.com\",\"peer0.users.example.com\"],
+	  \"peers\": [\"peer0.airport.example.com\"],
 	  \"fcn\":\"deletePerson\",
 	  \"args\":[\"$arg1\"]
 	}")
@@ -43,9 +43,17 @@ then
 	  -H "authorization: Bearer $token" \
 	  -H "content-type: application/json" \
 	  -d "{
-	  \"peers\": [\"peer0.airport.example.com\",\"peer0.users.example.com\"],
+	  \"peers\": [\"peer0.airport.example.com\"],
 	  \"fcn\":\"giveConsent\",
 	  \"args\":[\"$arg1\", \"$consent\"]
 	}")
 	echo $VALUES
+fi
+
+if [ $command = "gethistory" ]
+then
+	curl -s -X GET \
+	  "http://localhost:4000/channels/mychannel/chaincodes/testv10?peer=peer0.airport.example.com&fcn=getHistoryForPerson&args=%5B%22$arg1%22%5D" \
+	  -H "authorization: Bearer $token" \
+	  -H "content-type: application/json"
 fi

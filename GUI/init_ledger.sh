@@ -40,14 +40,14 @@ done < $filename
 
 consent="$(echo $consent_type | awk '{print tolower($0)}')";
 args="$(echo "$(echo $userID)", "$(echo $src)", "$(echo $name)", "$(echo $departDate)", "$(echo $phone)", "$(echo $creditCard)", "$(echo $aadhar_id)", "$(echo $email)", "$(echo $consent)")"
-chaincodeName="testv5"
+chaincodeName="testv10"
 
 VALUES=$(curl -s -X POST \
   http://localhost:4000/channels/mychannel/chaincodes/$chaincodeName \
   -H "authorization: Bearer $token" \
   -H "content-type: application/json" \
   -d "{
-  \"peers\": [\"peer0.airport.example.com\",\"peer0.ccd.example.com\",\"peer0.users.example.com\"],
+  \"peers\": [\"peer0.airport.example.com\"],
   \"fcn\":\"initPerson\",
   \"args\":[$args]
 }")

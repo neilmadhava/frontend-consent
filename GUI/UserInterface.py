@@ -91,17 +91,12 @@ class GUI:
             infoLabel.set_text('')
             result = os.popen('./query.sh ' + airport_token + ' ' + 'airport' + ' ' + value).read()
             print(result)
-            if(len(result.split(" ")) == 7):
-                js = result.split(" ")[3]
-                js = ast.literal_eval(js)
-                pretty = ' '.join(result.split(" ")[:3])
-                stri = ""
-                for key in js.keys():
-                    stri += key + ": \t" + js[key] + "\n"
-
-                result =  "\n" + stri
-            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
-            dialog.format_secondary_text(result)
+            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Queried data for "+str(value))
+            if(result[0]!='E'):
+                result = ast.literal_eval(result)
+                dialog.format_secondary_text(pformat(result))
+            else:
+                dialog.format_secondary_text(result)
             dialog.run()
             dialog.destroy()
 
@@ -113,19 +108,14 @@ class GUI:
             infoLabel.set_text('Username field is empty')
         else:
             infoLabel.set_text('')
-            result = os.popen('./query.sh ' + airport_token + ' ' + 'ccd' + ' ' + value).read()
+            result = os.popen('./query.sh ' + ccd_token + ' ' + 'ccd' + ' ' + value).read()
             print(result)
-            if(len(result.split(" ")) == 7):
-                js = result.split(" ")[3]
-                js = ast.literal_eval(js)
-                pretty = ' '.join(result.split(" ")[:3])
-                stri = ""
-                for key in js.keys():
-                    stri += key + ": \t" + js[key] + "\n"
-
-                result =  "\n" + stri
-            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
-            dialog.format_secondary_text(result)
+            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Queried data for "+str(value))
+            if(result[0]!='E'):
+                result = ast.literal_eval(result)
+                dialog.format_secondary_text(pformat(result))
+            else:
+                dialog.format_secondary_text(result)
             dialog.run()
             dialog.destroy()
 
@@ -139,17 +129,12 @@ class GUI:
             infoLabel.set_text('')
             result = os.popen('./query.sh ' + users_token + ' ' + 'users' + ' ' + value).read()
             print(result)
-            if(len(result.split(" ")) == 7):
-                js = result.split(" ")[3]
-                js = ast.literal_eval(js)
-                pretty = ' '.join(result.split(" ")[:3])
-                stri = ""
-                for key in js.keys():
-                    stri += key + ": \t" + js[key] + "\n"
-
-                result =  "\n" + stri
-            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
-            dialog.format_secondary_text(result)
+            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Queried data for "+str(value))
+            if(result[0]!='E'):
+                result = ast.literal_eval(result)
+                dialog.format_secondary_text(pformat(result))
+            else:
+                dialog.format_secondary_text(result)
             dialog.run()
             dialog.destroy()
 
@@ -229,7 +214,7 @@ class GUI:
                 file.write(self.values[i]+"\n")
             file.write(" ")
             file.close()
-            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Application Form")
+            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Application Form")
             execute = "./init_ledger.sh "  + users_token
             result = os.popen(execute).read()
             dialog.format_secondary_text(result)
@@ -278,10 +263,21 @@ class GUI:
         dialog.run()
         dialog.destroy()
 
-# c10e334e68406ce1bfa205ab63c830986ddd7c615b466cadf1e35ed2b4db7765
 
-
-
+    def getHistory(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        infoLabel = self.builder.get_object('infoLabel')
+        value = str(entry.get_text())
+        if value == '':
+            infoLabel.set_text('Username field is empty')
+        else:
+            infoLabel.set_text('')
+            result = os.popen('./users.sh ' + airport_token + ' ' + 'gethistory' + ' ' + value).read()
+            js = json.loads(result)
+            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
+            dialog.format_secondary_text(pformat(js))
+            dialog.run()
+            dialog.destroy()
 
 
 

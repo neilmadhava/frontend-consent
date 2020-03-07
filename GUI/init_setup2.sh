@@ -11,7 +11,7 @@ users_client="$3"
 CC_SRC_PATH="$PWD/chaincode/chain_person01"
 CC_CCP_PATH="$PWD/chaincode/chain_person01/collections_config.json"
 LANGUAGE="node"
-chaincodeName="testv5"
+chaincodeName="testv10"
 
 ORG1_TOKEN=$(curl -s -X POST \
   http://localhost:4000/users \
@@ -52,7 +52,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.airport.example.com","peer1.airport.example.com"]
+	"peers": ["peer0.airport.example.com"]
 }'
 
 
@@ -63,7 +63,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer0.ccd.example.com","peer1.ccd.example.com"]
+	"peers": ["peer0.ccd.example.com"]
 }'
 
 # "POST request Join channel on Users"
@@ -73,7 +73,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG3_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-  "peers": ["peer0.users.example.com","peer1.users.example.com"]
+  "peers": ["peer0.users.example.com"]
 }'
 
 # "POST request Update anchor peers on Airport"
@@ -114,7 +114,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d "{
-	\"peers\": [\"peer0.airport.example.com\",\"peer1.airport.example.com\"],
+	\"peers\": [\"peer0.airport.example.com\"],
 	\"chaincodeName\":\"$chaincodeName\",
 	\"chaincodePath\":\"$CC_SRC_PATH\",
 	\"chaincodeType\": \"$LANGUAGE\",
@@ -129,7 +129,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d "{
-  \"peers\": [\"peer0.ccd.example.com\",\"peer1.ccd.example.com\"],
+  \"peers\": [\"peer0.ccd.example.com\"],
   \"chaincodeName\":\"$chaincodeName\",
   \"chaincodePath\":\"$CC_SRC_PATH\",
   \"chaincodeType\": \"$LANGUAGE\",
@@ -143,7 +143,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG3_TOKEN" \
   -H "content-type: application/json" \
   -d "{
-  \"peers\": [\"peer0.users.example.com\",\"peer1.users.example.com\"],
+  \"peers\": [\"peer0.users.example.com\"],
   \"chaincodeName\":\"$chaincodeName\",
   \"chaincodePath\":\"$CC_SRC_PATH\",
   \"chaincodeType\": \"$LANGUAGE\",
