@@ -40,7 +40,7 @@ done < $filename
 
 consent="$(echo $consent_type | awk '{print tolower($0)}')";
 args="$(echo "$(echo $userID)", "$(echo $src)", "$(echo $name)", "$(echo $departDate)", "$(echo $phone)", "$(echo $creditCard)", "$(echo $aadhar_id)", "$(echo $email)", "$(echo $consent)")"
-chaincodeName="testv10"
+chaincodeName="newv3"
 
 VALUES=$(curl -s -X POST \
   http://localhost:4000/channels/mychannel/chaincodes/$chaincodeName \

@@ -10,24 +10,9 @@
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-goto-first</property>
+    <property name="stock">gtk-go-back</property>
   </object>
   <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-go-back</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-go-back</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-go-back</property>
-  </object>
-  <object class="GtkImage" id="image5">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-back</property>
@@ -39,8 +24,8 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">window</property>
     <property name="window_position">center</property>
-    <property name="default_width">400</property>
-    <property name="default_height">600</property>
+    <property name="default_width">500</property>
+    <property name="default_height">400</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child>
       <placeholder/>
@@ -592,7 +577,6 @@ Go to Dash</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">image2</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="button_clicked" swapped="no"/>
               </object>
@@ -885,8 +869,7 @@ Go to Dash</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">image3</property>
-                <property name="always_show_image">True</property>
+                <property name="image">image2</property>
                 <signal name="clicked" handler="button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1043,8 +1026,6 @@ Go to Dash</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">image4</property>
-                <property name="always_show_image">True</property>
                 <signal name="clicked" handler="button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1151,64 +1132,6 @@ Go to Dash</property>
             <property name="name">page4</property>
             <property name="title" translatable="yes">page4</property>
             <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="scrollBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Back</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">image5</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
-                <property name="min_content_width">400</property>
-                <property name="min_content_height">600</property>
-                <property name="max_content_width">400</property>
-                <property name="max_content_height">600</property>
-                <child>
-                  <object class="GtkViewport">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="scrollResult">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">191</property>
-                        <property name="label" translatable="yes">audit result</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="name">page5</property>
-            <property name="title" translatable="yes">page5</property>
-            <property name="position">5</property>
           </packing>
         </child>
       </object>
